@@ -39,7 +39,6 @@
       text.innerText = `:${imageName.replace('.png', '')}: - ${String.fromCharCode(57345 + Number(emoteId) - 1)}`
       div.appendChild(text)
       const img = new Image()
-      console.log(msPerFrame / (1000 / 60))
       img.onload = () => draw(canvas, ctx, img, 0, msPerFrame, Infinity)
       img.src = `emoticons/${imageName}`.replace('.png', '_png.png')
       div.appendChild(canvas)
