@@ -2,6 +2,11 @@
 <html>
 
 <head>
+  <meta charset="utf-8">
+
+  <title>Dota 2 Emotes</title>
+  <meta name="description" content="Dota 2 Emotes">
+  <meta name="author" content="Valve">
   <style>
     body {
       background-color: black;
@@ -19,14 +24,16 @@
 </head>
 
 <body>
-  <div>
+  <h1>
     Copy the string next to the emote name "" and use it in the console "say "
-  </div>
+  </h1>
 </body>
 <script type="text/javascript">
   document.addEventListener('DOMContentLoaded', init)
   async function init() {
-    const { emoticons } = await (await fetch('./emoticons.json')).json()
+    const data = (await (await fetch('./emoticons.json')).json())
+    const emoticons = data.emoticons
+    console.log(emoticons)
     for (const emoteId in emoticons) {
       const imageName = emoticons[emoteId].image_name
       const msPerFrame = emoticons[emoteId].ms_per_frame
@@ -49,7 +56,7 @@
       const height = img.height
       const width = img.width // height===width
       // Draw static images single time
-      if (img.height === img.width) return ctx.drawImage(img, 0, 0, height, height, 0, 0, height * 1.5, height * 1.5) 
+      if (img.height === img.width) return ctx.drawImage(img, 0, 0, height, height, 0, 0, height * 1.5, height * 1.5)
       // Do nothing if not time to re-draw next frame
       if (tick < msPerFrame / (1000 / 60)) { // Assuming 60 fps :(
         return window.requestAnimationFrame(() => draw(canvas, ctx, img, i, msPerFrame, tick + 1))
