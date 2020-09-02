@@ -5,7 +5,7 @@ import fs from 'fs'
 import util from 'util'
 const readFile = util.promisify(fs.readFile)
 
-const app = express()  
+const app = express()
 
 app.get('/', async (req, res) => {
   const index = (await readFile('./index.html')).toString()
@@ -16,4 +16,4 @@ app.get('/emoticons.json', async (req, res) => {
   const emoteJson = JSON.parse((await readFile('./emoticons.json')).toString())
   res.json(emoteJson)
 })
-app.listen(3024, () => {})
+app.listen(3024, () => { })
