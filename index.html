@@ -9,8 +9,10 @@
   <meta name="author" content="Valve">
   <style>
     body {
-      background-color: black;
+      background-color: #000;
       color: white;
+      font-family: courier, arial, helvetica;
+      padding: 0 15px 0 15px
     }
 
     div {
@@ -20,13 +22,38 @@
     span {
       margin: 10px;
     }
+
+    nav {
+      padding: 0 20px 0 0;
+    }
+
+    nav>ul {
+      list-style: none;
+    }
+
+    nav a {
+      padding: 12px 14px;
+      float: right;
+    }
+
+    nav img {
+      width: 100px;
+    }
+
   </style>
 </head>
 
 <body>
+  <nav>
+    <ul>
+      <li><a href="https://github.com/vibosxD/dota_emotes/" target="_blank"><img
+            src="https://github.githubassets.com/images/modules/logos_page/GitHub-Logo.png" /></a></li>
+    </ul>
+  </nav>
   <h1>
-    Copy the string next to the emote name "" and use it in the console "say "
+    Copy the string next to the emote name ""
   </h1>
+  <p>Works in console with say "{emote_symbol}" and steam name</p>
 </body>
 
 <script type="text/javascript">
