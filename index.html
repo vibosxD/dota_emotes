@@ -34,41 +34,51 @@
   async function init() {
     const data = (await (await fetch('./emoticons.json')).json())
     const emoticons = data.emoticons
-    console.log(emoticons)
     for (const emoteId in emoticons) {
       const imageName = emoticons[emoteId].image_name
       const msPerFrame = emoticons[emoteId].ms_per_frame
+      // DOM elements to append
       const div = document.createElement('div')
       const text = document.createElement('div')
       const canvas = document.createElement('canvas')
+      const img = new Image()
+
+      const ctx = canvas.getContext('2d')
+
+      // Change DOM elements' attributes
       canvas.height = 64
       canvas.width = 64
-      const ctx = canvas.getContext('2d')
       text.innerText = `:${imageName.replace('.png', '')}: - ${String.fromCharCode(57345 + Number(emoteId) - 1)}`
-      div.appendChild(text)
-      const img = new Image()
       img.onload = () => draw(canvas, ctx, img, 0, msPerFrame, Infinity)
       img.src = `emoticons/${imageName}`.replace('.png', '_png.png')
+
+      // Append to DOM
+      div.appendChild(text)
       div.appendChild(canvas)
       document.body.appendChild(div)
     }
 
     function draw(canvas, ctx, img, i, msPerFrame, tick) {
       const height = img.height
-      const width = img.width // height===width
+      const width = img.width
       // Draw static images single time
-      if (img.height === img.width) return ctx.drawImage(img, 0, 0, height, height, 0, 0, height * 1.5, height * 1.5)
-      // Do nothing if not time to re-draw next frame
+      if (height === width) return ctx.drawImage(img, 0, 0, height, height, 0, 0, height * 1.5, height * 1.5)
+      // Do nothing if not time to re-draw next image
       if (tick < msPerFrame / (1000 / 60)) { // Assuming 60 fps :(
-        return window.requestAnimationFrame(() => draw(canvas, ctx, img, i, msPerFrame, tick + 1))
+        window.requestAnimationFrame(() => draw(canvas, ctx, img, i, msPerFrame, tick + 1))
       } else {
+        // Time to draw
         tick = 0
+        // Start over if at end of tile map
+        if (i * height >= width) i = 0
+
+        // Reset canvas and draw
+        ctx.clearRect(0, 0, canvas.width, canvas.height)
+
+        // Use height as a width since size is a square
+        ctx.drawImage(img, i * height, 0, height, height, 0, 0, height * 1.5, height * 1.5)
+        window.requestAnimationFrame(() => draw(canvas, ctx, img, i + 1, msPerFrame, tick + 1))
       }
-      // Start over if at end of tile
-      if (i * height >= width) i = 0
-      ctx.clearRect(0, 0, canvas.width, canvas.height)
-      ctx.drawImage(img, i * height, 0, height, height, 0, 0, height * 1.5, height * 1.5)
-      window.requestAnimationFrame(() => draw(canvas, ctx, img, i + 1, msPerFrame, tick + 1))
     }
   }
 </script>
